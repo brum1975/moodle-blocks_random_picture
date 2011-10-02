@@ -109,14 +109,14 @@ class block_random_picture extends block_base {
                 //check if thumb already
                 $thumb = $fs->get_file($this->context->id,'block_random_picture','thumbnail',$file->get_itemid(),$file->get_filepath(),$file->get_filename());
                 if ($thumb){
-                    echo 'Thumbnail Found<br />';
+                    //Thumbnail Found
                     if (!$imageinfo = $thumb->get_imageinfo()) {
                         throw new file_exception('storedfileproblem', 'File is not an image');
                     }
                     if ($this->config->width == $imageinfo['width']){
                         //do nothing as current image is fine
                     } else {
-                        echo 'Create new thumbnail as dimensions changed<br />';
+                        //Create new thumbnail as dimensions changed
                         //remove current thumb and recreate
                         $thumb->delete();
                         //create thumb of current dimension

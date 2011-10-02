@@ -3,6 +3,9 @@
 .hiddenlightboxlink{
 display:none;
 }
+.block_random_picture .content {
+    text-align: center;
+}
 #lightbox {
 	position: absolute;
 	left: 0;
