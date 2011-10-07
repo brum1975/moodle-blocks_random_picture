@@ -115,11 +115,18 @@ class block_random_picture extends block_base {
                 $fs = get_file_storage();
                 $files = $fs->get_area_files($this->context->id, 'block_random_picture', 'content',$this->context->instanceid);
                 $numberofentries = count($files)-2;//-1 as count starts at one but index starts at 0 and another -1 as . is counted as a file
-                $j = 0;
-                if ($numberofentries>1){
-                    $j = (rand(0,$numberofentries));
-                    $this->config->nexttime = time()+60*$this->config->refresh;                    
+                if (!isset($this->config->chosen)){
+                    $this->config->chosen = -1;
                 }
+                $j=$this->config->chosen;
+                if ($numberofentries>1){
+                    while ($j == $this->config->chosen){
+                        $j = (rand(0,$numberofentries));                      
+                    }
+                }  
+                $this->config->cache = $this->config->chosen.' - '.$j.'<br />';
+                $this->config->chosen = $j;
+                $this->config->nexttime = time()+60*$this->config->refresh; 
                 //can't reference $files[$j]!!! so cycling through until get to $j-th value
                 //is this the best way?
                 $tempcount=0;
@@ -133,7 +140,7 @@ class block_random_picture extends block_base {
                     }
  
                 }
-                $this->config->cache = '';
+                //$this->config->cache = '';
                 //get full image
                 $requiredimage = $CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/block_random_picture/content/'.$file->get_filename();
                 //check if thumb already
