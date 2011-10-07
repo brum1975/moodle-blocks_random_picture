@@ -59,7 +59,36 @@ class block_random_picture extends block_base {
             return $resized;
 
         }
+   
+    function create_thumbnail(&$fs,$file){                        
+        //create thumb of current dimension
+        $fullimage = $fs->get_file($this->context->id,'block_random_picture','content',$file->get_itemid(),$file->get_filepath(),$file->get_filename());
+        if (!$imageinfo = $fullimage->get_imageinfo()) {
+            throw new file_exception('storedfileproblem', 'File is not an image');
+        }
+        $thumbnailwidth=$this->config->width;
+
+        $thumbinfo = array(
+            'contextid' => $this->context->id,
+            'component' => 'block_random_picture',
+            'filearea' => 'thumbnail',
+            'itemid' => $file->get_itemid(),
+            'filepath' => $file->get_filepath(),
+            'filename' => $file->get_filename());
+        $fileext = pathinfo($file->get_filename(), PATHINFO_EXTENSION);
+        ob_start();
+        if ($fileext=='jpg' || $fileext=='jpeg'){
+            imagejpeg($this->get_image_resized($fullimage,$thumbnailwidth));
+        } elseif ($fileext=='png'){
+            imagepng($this->get_image_resized($fullimage,$thumbnailwidth));
+        }
+        $thumbnail = ob_get_clean();
+        $fs = get_file_storage();
+        $fs->create_file_from_string($thumbinfo, $thumbnail); 
     
+    }
+
+   
     function get_content() {
         global $CFG, $PAGE;
         
@@ -92,6 +121,7 @@ class block_random_picture extends block_base {
                     $this->config->nexttime = time()+60*$this->config->refresh;                    
                 }
                 //can't reference $files[$j]!!! so cycling through until get to $j-th value
+                //is this the best way?
                 $tempcount=0;
                 foreach ($files as $file){
                     if($file->get_filename()!=='.'){
@@ -117,58 +147,12 @@ class block_random_picture extends block_base {
                         //do nothing as current image is fine
                     } else {
                         //Create new thumbnail as dimensions changed
-                        //remove current thumb and recreate
                         $thumb->delete();
-                        //create thumb of current dimension
-                        $fullimage = $fs->get_file($this->context->id,'block_random_picture','content',$file->get_itemid(),$file->get_filepath(),$file->get_filename());
-                        if (!$imageinfo = $fullimage->get_imageinfo()) {
-                            throw new file_exception('storedfileproblem', 'File is not an image');
-                        }
-                        $thumbnailwidth=$this->config->width;
-
-                        $thumbinfo = array(
-                            'contextid' => $this->context->id,
-                            'component' => 'block_random_picture',
-                            'filearea' => 'thumbnail',
-                            'itemid' => $file->get_itemid(),
-                            'filepath' => $file->get_filepath(),
-                            'filename' => $file->get_filename());
-                        $fileext = pathinfo($file->get_filename(), PATHINFO_EXTENSION);
-                        ob_start();
-                        if ($fileext=='jpg' || $fileext=='jpeg'){
-                            imagejpeg($this->get_image_resized($fullimage,$thumbnailwidth));
-                        } elseif ($fileext=='png'){
-                            imagepng($this->get_image_resized($fullimage,$thumbnailwidth));
-                        }
-                        $thumbnail = ob_get_clean();
-                        $fs = get_file_storage();
-                        $fs->create_file_from_string($thumbinfo, $thumbnail); 
+                        $this->create_thumbnail($fs,$file);
                     }
                 } else {//No Thumbnail Found                    
                     //create thumb of current dimension
-                    $fullimage = $fs->get_file($this->context->id,'block_random_picture','content',$file->get_itemid(),$file->get_filepath(),$file->get_filename());
-                    if (!$imageinfo = $fullimage->get_imageinfo()) {
-                        throw new file_exception('storedfileproblem', 'File is not an image');
-                    }
-                    $thumbnailwidth=$this->config->width;
-
-                    $thumbinfo = array(
-                        'contextid' => $this->context->id,
-                        'component' => 'block_random_picture',
-                        'filearea' => 'thumbnail',
-                        'itemid' => $file->get_itemid(),
-                        'filepath' => $file->get_filepath(),
-                        'filename' => $file->get_filename());
-                    $fileext = pathinfo($file->get_filename(), PATHINFO_EXTENSION);
-                    ob_start();
-                    if ($fileext=='jpg' || $fileext=='jpeg'){
-                        imagejpeg($this->get_image_resized($fullimage,$thumbnailwidth));
-                    } elseif ($fileext=='png'){
-                        imagepng($this->get_image_resized($fullimage,$thumbnailwidth));
-                    }
-                    $thumbnail = ob_get_clean();
-                    $fs = get_file_storage();
-                    $fs->create_file_from_string($thumbinfo, $thumbnail);                            
+                    $this->create_thumbnail($fs,$file);                          
                     
                 }
                 if ($this->config->lightboxenabled){
