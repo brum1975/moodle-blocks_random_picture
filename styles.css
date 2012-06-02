@@ -31,7 +31,7 @@ display:none;
 	top: 40%;
 	left: 0%;
 	height: 25%;
-	background: url(http://127.0.0.1/upgrade/2_0/moodle/blocks/random_picture/images/loading.gif) no-repeat top center;
+	background: url(./../blocks/random_picture/images/loading.gif) no-repeat top center;
 	width: 100%;
 	text-align: center;
 	line-height: 0;
@@ -55,8 +55,8 @@ display:none;
 }
 #prevLink { left: 0; float: left; }
 #nextLink { right: 0; float: right; }
-#prevLink:hover, #prevLink:visited:hover { background: url(http://127.0.0.1/upgrade/2_0/moodle/blocks/random_picture/images/prevlabel.gif) left 15% no-repeat; }
-#nextLink:hover, #nextLink:visited:hover { background: url(http://127.0.0.1/upgrade/2_0/moodle/blocks/random_picture/images/nextlabel.gif) right 15% no-repeat; }
+#prevLink:hover, #prevLink:visited:hover { background: url(./../blocks/random_picture/images/prevlabel.gif) left 15% no-repeat; }
+#nextLink:hover, #nextLink:visited:hover { background: url(./../blocks/random_picture/images/nextlabel.gif) right 15% no-repeat; }
 
 #imageDataContainer {
 	font: 10px Verdana, Helvetica, sans-serif;
@@ -74,7 +74,7 @@ display:none;
 #imageData #bottomNavClose {
 	width: 66px;
 	height:22px;
-	background: url(http://127.0.0.1/upgrade/2_0/moodle/blocks/random_picture/images/closelabel.gif) no-repeat;
+	background: url(./../blocks/random_picture/images/closelabel.gif) no-repeat;
 	float: right;
 	padding-bottom: 0.7em;
 	outline: none;

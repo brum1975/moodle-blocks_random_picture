@@ -124,7 +124,7 @@ class block_random_picture extends block_base {
                         $j = (rand(0,$numberofentries));                      
                     }
                 }  
-                $this->config->cache = $this->config->chosen.' - '.$j.'<br />';
+                $this->config->cache = '';
                 $this->config->chosen = $j;
                 $this->config->nexttime = time()+60*$this->config->refresh; 
                 //can't reference $files[$j]!!! so cycling through until get to $j-th value
@@ -181,9 +181,9 @@ class block_random_picture extends block_base {
                         }
                     }                    
                 } else {
-                    $imgurl=$CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/block_random_picture/content/'.$allfilenames[$i];
-                    $thumburl=$CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/block_random_picture/thumbnail/'.$allfilenames[$i];
-                    $this->config->cache .= '<a href="'.$imgurl.'" rel="lightbox" ><img width="'.$this->config->width.'px" src="'.$thumburl.'" /></a>';
+                    $imgurl=$CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/block_random_picture/content/'.$file->get_filename();
+                    $thumburl=$CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/block_random_picture/thumbnail/'.$file->get_filename();
+                    $this->config->cache .= '<a href="'.$imgurl.'" rel="lightbox[rand'.$this->context->instanceid.']" ><img width="'.$this->config->width.'px" src="'.$thumburl.'" /></a>';
                 }
 
                 parent::instance_config_save($this->config);                 

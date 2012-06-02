@@ -2,6 +2,7 @@ YUI.add('moodle-block_random_picture-lightbox', function(Y) {
 
 	/**
 	 * Inspired by the original Lightbox, this is a port to YUI.
+     * Modified by Matthew Cannings for Moodle Lightbox Gallery
 	 * See Lokesh Dhakar's original at http://www.huddletogether.com/projects/lightbox2/.
 	 * Currently supports everything that module supports with plans to integrate
 	 * additional functionality (i.e. non-images, slideshow mode, etc.) coming soon.
@@ -763,4 +764,4 @@ YUI.add('moodle-block_random_picture-lightbox', function(Y) {
         }
     };
 
-}, '@VERSION@' ,{requires:['base','node','anim']});
+}, '@VERSION@' ,{requires:['base', 'node-deprecated','anim']});
